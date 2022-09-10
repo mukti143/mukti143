@@ -1,0 +1,133 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+- name: Setup Playdate SDK
+  uses: idleberg/setup-playdate-sdk@v2.0.1
+  - name: Setup .NET Core SDK
+  uses: actions/setup-dotnet@v2.1.0
+  with:
+    # Optional SDK version(s) to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x
+    dotnet-version: # optional
+    # Optional global.json location, if your global.json isn't located in the root of the repo.
+    global-json-file: # optional
+    # Optional package source for which to set up authentication. Will consult any existing NuGet.config in the root of the repo and provide a temporary NuGet.config using the NUGET_AUTH_TOKEN environment variable as a ClearTextPassword
+    source-url: # optional
+    # Optional OWNER for using packages from GitHub Package Registry organizations/users other than the current repository's owner. Only used if a GPR URL is also provided in source-url
+    owner: # optional
+    # Optional NuGet.config location, if your NuGet.config isn't located in the root of the repo.
+    config-file: # optional
+    # Whether prerelease versions should be matched with non-exact versions (for example 5.0.0-preview.6 being matched by 5, 5.0, 5.x or 5.0.x). Defaults to false if not provided.
+    include-prerelease: # optional
+    
+- name: Setup Node.js environment
+  uses: actions/setup-node@v3.4.1
+  .devbots/needs-triage.yml
+  enabled: true
+label: "needs-triage"
+delay: 3
+- name: .NET - Get Project File ReleaseVersion
+  uses: greenygh0st/net-proj-release-version@v2
+- name: esp-idf build
+  uses: sebastianPsm/esp-idf-ci-action@1
+  - name: Operator-SDK Action
+  uses: xUnholy/operator-sdk-github-action@v1.0.0
+- name: flutter-android-sdk
+  uses: andreujuanc/flutter-android-sdk@v1.0.6
+- name: Operator-SDK K8s Action
+  uses: dramirez-qb/operator-sdk-github-action@v3
+- name: Install Atlassian SDK
+  uses: rodrigo-nogues/github-action-install-atlassian-sdk@v1
+- name: Setup operator-sdk Action
+  uses: shivanshs9/setup-k8s-operator-sdk@v1
+- name: Setup Android SDK Tools
+  uses: android-actions/setup-android@v2.0.2
+- name: Setup Flutter SDK
+  uses: flutter-actions/setup-flutter@v2.2
+- name: Setup Dart SDK
+  uses: dart-lang/setup-dart@v1.3
+- name: Setup PHP SDK tool kit for Windows PHP builds
+  uses: zephir-lang/setup-php-sdk@v1.0
+- name: Version Visual Studio SDK projects
+  uses: roryprimrose/set-vs-sdk-project-version@v1.0.3
+- name: "Configure AWS Credentials" Action For GitHub Actions
+  uses: aws-actions/configure-aws-credentials@v1
+- name: Setup .NET build dependencies
+  uses: timheuer/bootstrap-dotnet@v1
+- name: ECR Login Token
+  uses: PhutureCorp/ecr-login-token@v0.8.0
+- name: JEsperancinhaOrg Android Action
+  uses: JEsperancinhaOrg/android-action@v0.0.1
+- name: android-ci-github-action
+  uses: Code0987/android-ci-github-action@v0.1.0
+- name: .NET - Get Project File ReleaseVersion
+  uses: greenygh0st/net-proj-release-version@v2
+- name: Setup Playdate SDK
+  uses: idleberg/setup-playdate-sdk@v2.0.1
+- name: setup android sdk for self hosted runner
+  uses: amyu/setup-android@v1.1
+- name: Setup Playdate SDK
+  uses: idleberg/setup-playdate-sdk@v2.0.1
+steps:
+- uses: actions/checkout@v3
+- uses: actions/setup-node@v3
+  with:
+    node-version: 16
+- run: npm ci
+- run: npm test
+- name: Telegram Action
+  uses: xinthink/action-telegram@v1.1
+name: 'Telegram Action'
+description: 'Telegram notification for workflow set up with GitHub Actions'
+author: 'xinthink'
+branding:
+  icon: 'send'
+  color: 'blue'
+inputs:
+  botToken:
+    description: 'The Telegram Bot token'
+    required: true
+  chatId:
+    description: 'The target to which the message will be sent, can be a Telegram Channel or Group'
+    required: true
+  jobStatus:
+    description: "The current status of the job: job.status, defaults to 'success'"
+    default: 'success'
+  skipSuccess:
+    description: "Only non-success notifications will be sent if true, include success notifications otherwise, defaults to 'true'"
+    default: 'true'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
